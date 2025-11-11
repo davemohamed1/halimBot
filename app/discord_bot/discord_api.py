@@ -25,6 +25,8 @@ class MyClient(discord.Client):
 
         if command == '/ask' or command == '/chat':
             bot_response = chatgpt_response(prompt = user_message)
+            if len(bot_response) > 4000:
+                bot_response = bot_response[:4000]
             await message.channel.send(bot_response)
 intents = discord.Intents.default()
 intents.message_content = True
