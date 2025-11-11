@@ -25,9 +25,11 @@ class MyClient(discord.Client):
 
         if command == '/ask' or command == '/chat':
             bot_response = chatgpt_response(prompt = user_message)
-            if len(bot_response) > 4000:
-                bot_response = bot_response[:4000]
-            await message.channel.send(bot_response)
+            # Split response into chunks of 2000 characters to stay within Discord's limit
+            chunk_size = 2000
+            for i in range(0, len(bot_response), chunk_size):
+                chunk = bot_response[i:i + chunk_size]
+                await message.channel.send(chunk)
 intents = discord.Intents.default()
 intents.message_content = True
 
